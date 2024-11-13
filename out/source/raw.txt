@@ -1,0 +1,20 @@
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+points:
+  key:
+    padding: cy
+  zones:
+    main:
+      rows:
+        bottom:
+        home:
+        top:
+        thumbline:
+      columns:
+        pinky:
+        ring:
+          key.stagger: 10
+        middle:
+          key.stagger: 5
+        index:
+          key.stagger: -5
+        far:

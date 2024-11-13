@@ -1,0 +1,75 @@
+# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
+points:
+  key.padding: 20
+  zones:
+    matrix:
+      columns:
+        prepinky:
+          rows:
+            top:
+              skip: true
+            middle:
+              skip: true
+            bottom:
+              skip: true
+        pinky:
+          key.stagger: 10
+          rows:
+            top:
+              skip: true
+        ring:
+          key.stagger: -5
+          key.skip: 
+          rows:
+            bottom:
+              skip: true
+        middle:
+          key.stagger: 10
+          rows:
+            bottom:
+              skip: true
+        index:
+          key.stagger: -5
+        inner:
+          key.stagger: -5
+      rows:
+        bottom:
+        home:
+        middle:
+        top:
+    thumb:
+      anchor: 
+        ref: matrix_inner_bottom
+        shift: [45, -30]
+      columns:
+        inner:
+          key.splay: 40
+          key.stagger: -20
+          key.padding: 21
+          key.spread: 30
+          rows:
+            1:
+              skip: false
+        outer:
+          key.stagger: 10
+          key.spread: 22
+          key.splay: 1
+          key.padding: 21
+      rows:
+        1:
+          rotate: -5
+        2:
+          rotate: 5
+        3:
+          rotate: 5
+
+  rotate: 0
+ # mirror:
+  #  ref: matrix_pinky_home
+   # distance: 350
+outlines:
+  left:
+    - where: true
+      what: rectangle
+      size: [cx + 5, cy + 5]
+      fillet: 1

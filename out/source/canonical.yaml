@@ -1,0 +1,22 @@
+points:
+    key:
+        padding: cy
+    zones:
+        main:
+            rows:
+                bottom: null
+                home: null
+                top: null
+                thumbline: null
+            columns:
+                pinky: null
+                ring:
+                    key:
+                        stagger: 10
+                middle:
+                    key:
+                        stagger: 5
+                index:
+                    key:
+                        stagger: -5
+                far: null
