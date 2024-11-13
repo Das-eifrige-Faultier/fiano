@@ -1,4 +1,3 @@
-# `U` is a predefined unit of measure that means 19.05mm, which is MX spacing
 points:
   key.padding: 20
   zones:
@@ -8,7 +7,7 @@ points:
           rows:
             top:
               skip: true
-            middle:
+            hometop:
               skip: true
             bottom:
               skip: true
@@ -35,7 +34,7 @@ points:
       rows:
         bottom:
         home:
-        middle:
+        hometop:
         top:
     thumb:
       anchor: 
@@ -73,3 +72,38 @@ outlines:
       what: rectangle
       size: [cx + 5, cy + 5]
       fillet: 1
+
+  keys:
+    - where: true
+      what: rectangle
+      size: [cx - 0.5, cy - 0.5]
+      bound: false
+
+
+  shape:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_prepinky_home
+          shift: [0, 0]
+        - ref: matrix_middle_top
+          shift: [-15, 0]
+        - ref: matrix_inner_top
+          shift: [0, 0]
+        - ref: matrix_inner_home
+          shift: [0, 5]
+        - ref: thumb_outer_1
+          shift: [0, 0]
+        - ref: thumb_inner_1
+          shift: [0, 0]
+        - ref: matrix_inner_bottom
+          shift: [10, -5]
+
+      fillet: 20
+      expand: 20
+      adjust.shift: [0, 0]
+
+  combo:
+    - name: shape
+    - operation: subtract
+      name: keys
