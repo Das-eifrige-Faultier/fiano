@@ -1,9 +1,13 @@
 points:
-  key.padding: 20
+  key:
+    padding: 20
+    spread: 20
   zones:
     matrix:
       columns:
         prepinky:
+          key:
+            column_net: P9
           rows:
             top:
               skip: true
@@ -11,67 +15,101 @@ points:
               skip: true
             bottom:
               skip: true
+            home:
+              row_net: P8
+        
         pinky:
-          key.stagger: 10
+          key:
+            stagger: 10
+            column_net: P9
           rows:
             top:
               skip: true
+            hometop:
+              row_net: P21
+            home:
+              row_net: P20
+            bottom:
+              row_net: P19
         ring:
-          key.stagger: -5
-          key.skip: 
+          key:
+            stagger: -5
+            column_net: P10
           rows:
             bottom:
               skip: true
         middle:
-          key.stagger: 10
+          key:
+            stagger: 10
+            column_net: P14
           rows:
             bottom:
               skip: true
+          
         index:
-          key.stagger: -5
+          key:
+            stagger: -5
+            column_net: P15
+          rows.bottom:
+            column_net: P9
+            row_net: P18
+
         inner:
-          key.stagger: -5
+          key:
+            stagger: -5
+            column_net: P16
+          rows.bottom:
+            column_net: P10
+            row_net: P18
       rows:
         bottom:
+          row_net: P18
+          columns.pinky.row_net: P19
         home:
+          row_net: P19
+          columns.pinky.row_net: P20
         hometop:
+          row_net: P20
         top:
+          row_net: P21
     thumb:
       anchor: 
         ref: matrix_inner_bottom
         shift: [45, -30]
       columns:
         inner:
-          key.splay: 40
-          key.stagger: -20
-          key.padding: 21
-          key.spread: 30
-          rows:
-            1:
-              skip: false
+          key:
+            splay: 40
+            stagger: -20
+            padding: 21
+            spread: 30
+            column_net: P8
+
+          
         outer:
-          key.stagger: 10
-          key.spread: 22
-          key.splay: 1
-          key.padding: 21
+          key:
+            stagger: 10
+            spread: 22
+            splay: 1
+            padding: 21
+            column_net: P18
+
       rows:
         1:
           rotate: -5
+          column_net: P16
         2:
           rotate: 5
+          column_net: P15
         3:
           rotate: 5
+          column_net: P14
 
   rotate: 0
  # mirror:
   #  ref: matrix_pinky_home
    # distance: 350
 outlines:
-  left:
-    - where: true
-      what: rectangle
-      size: [cx + 5, cy + 5]
-      fillet: 1
 
   keys:
     - where: true
@@ -79,8 +117,7 @@ outlines:
       size: [cx - 0.5, cy - 0.5]
       bound: false
 
-
-  shape:
+  left:
     - what: polygon
       operation: stack
       points:
@@ -104,6 +141,84 @@ outlines:
       adjust.shift: [0, 0]
 
   combo:
-    - name: shape
+    - name: left
     - operation: subtract
       name: keys
+
+pcbs:
+  fiano:
+    outlines:
+      main:
+        outline: left
+    footprints:
+      mx_hotswap:
+        what: mx
+        where: true
+        params:
+          keycaps: true
+          reverse: true
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+
+      promicro:
+        what: promicro
+        params:
+          orientation: "down"
+        where:
+          ref: matrix_inner_top
+          # ODER: ref.aggregate.parts: [matrix_inner_top, matrix_inner_bottom] um Mitte zu finden
+          shift: [0, 0]
+          rotate: 0
+
+      oled:
+        what: oled
+        params:
+          side: "F"
+          SDA: P2
+          SCL: P3
+        where:
+          ref: thumb_outer_1
+          shift: [0, 0]
+          rotate: 0
+      
+      reset:
+        what: button
+        params:
+          from: GND
+          to: reset
+        where:
+          ref: thumb_inner_1
+          shift: [0, 0]
+          rotate: 0
+      
+      # trrs_jack:
+      #   what: trrs
+      #   params:
+      #   where:
+      #     ref: thumb_inner_1
+      #     shift: [0, 0]
+      #     rotate: 0
+        #?????????
+      
+
+
+
+
+
+cases:
+  standard_case_wood:
+    - what: outline
+      name: left
+      extrude: 10
+      shift: [0, 0, 0]
+      rotate: [0, 0, 0]
