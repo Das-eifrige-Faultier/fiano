@@ -437,10 +437,6 @@
       {
         "netclass": "Default",
         "pattern": "P7"
-      },
-      {
-        "netclass": "Default",
-        "pattern": "reset"
       }
     ]
   },

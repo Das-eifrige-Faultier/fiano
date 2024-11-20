@@ -4,6 +4,8 @@ points:
     spread: 20
   zones:
     matrix:
+      anchor:
+        shift: [100, -200]
       columns:
         prepinky:
           key:
@@ -175,10 +177,9 @@ pcbs:
         params:
           orientation: "down"
         where:
-          ref: matrix_inner_top
-          # ODER: ref.aggregate.parts: [matrix_inner_top, matrix_inner_bottom] um Mitte zu finden
-          shift: [0, 0]
-          rotate: 0
+          ref.aggregate.parts: [matrix_ring_home, matrix_index_bottom]
+          shift: [0, -8]
+          rotate: 90
 
       oled:
         what: oled
@@ -187,18 +188,54 @@ pcbs:
           SDA: P2
           SCL: P3
         where:
-          ref: thumb_outer_1
-          shift: [0, 0]
+          ref: matrix_ring_home
+          shift: [5, -15]
           rotate: 0
       
       reset:
         what: button
         params:
           from: GND
-          to: reset
+          to: RST
+        where:
+          ref: matrix_pinky_hometop
+          shift: [0, 15]
+          rotate: 0
+      
+      holeLeftTop:
+        what: mountinghole
+        where:
+          ref: matrix_middle_top
+          shift: [-20, 10]
+          rotate: 0
+      
+      holeLeftCenter:
+        what: mountinghole
+        where:
+          ref: matrix_pinky_hometop
+          shift: [-20, -10]
+          rotate: 0
+      
+      holeCenterBottom:
+        what: mountinghole
+        where:
+          ref: matrix_ring_home
+          shift: [0, -20]
+          rotate: 0
+      
+      holeThumbBottom:
+        what: mountinghole
         where:
           ref: thumb_inner_1
-          shift: [0, 0]
+          shift: [15, -5]
+          rotate: 0
+      
+
+      holeThumbTop:
+        what: mountinghole
+        where:
+          ref: thumb_outer_3
+          shift: [0, 20]
           rotate: 0
       
       # trrs_jack:
