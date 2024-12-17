@@ -5,11 +5,13 @@ points:
   zones:
     matrix:
       anchor:
-        shift: [100, -200]
+        shift: [50, -150]
       columns:
         prepinky:
           key:
-            column_net: P9
+            column_net: L9
+            mirror:
+              column_net: R9
           rows:
             top:
               skip: true
@@ -18,62 +20,93 @@ points:
             bottom:
               skip: true
             home:
-              row_net: P8
+              row_net: L8
+              mirror:
+                row_net: R8
         
         pinky:
           key:
             stagger: 10
-            column_net: P9
+            column_net: L9
+            mirror:
+              column_net: R9
           rows:
             top:
               skip: true
             hometop:
-              row_net: P21
+              row_net: L21
+              mirror:
+                row_net: R21
             home:
-              row_net: P20
+              row_net: L20
+              mirror:
+                row_net: R20
             bottom:
-              row_net: P19
+              row_net: L19
+              mirror:
+                row_net: R19
         ring:
           key:
             stagger: -5
-            column_net: P10
+            column_net: L10
+            mirror:
+              column_net: R10
           rows:
             bottom:
               skip: true
         middle:
           key:
             stagger: 10
-            column_net: P14
+            column_net: L14
+            mirror:
+              column_net: R14
           rows:
             bottom:
               skip: true
-          
         index:
           key:
             stagger: -5
-            column_net: P15
-          rows.bottom:
-            column_net: P9
-            row_net: P18
-
+            column_net: L15
+            mirror:
+              column_net: R15
+          rows:
+            bottom:
+              skip: true
         inner:
           key:
             stagger: -5
-            column_net: P16
+            column_net: L16
+            mirror:
+              column_net: R16
           rows.bottom:
-            column_net: P10
-            row_net: P18
+            column_net: L10
+            row_net: L18
+            mirror:
+              column_net: R10
+              row_net: R18
       rows:
         bottom:
-          row_net: P18
-          columns.pinky.row_net: P19
+          row_net: L18
+          mirror:
+            row_net: R18
+          columns.pinky.row_net: L19
+          columns.pinky.mirror:
+            row_net: R19
         home:
-          row_net: P19
-          columns.pinky.row_net: P20
+          row_net: L19
+          mirror:
+            row_net: R19
+          columns.pinky.row_net: L20
+          columns.pinky.mirror:
+            row_net: R20
         hometop:
-          row_net: P20
+          row_net: L20
+          mirror:
+            row_net: R20
         top:
-          row_net: P21
+          row_net: L21
+          mirror:
+            row_net: R21
     thumb:
       anchor: 
         ref: matrix_inner_bottom
@@ -85,32 +118,42 @@ points:
             stagger: -20
             padding: 21
             spread: 30
-            column_net: P8
+            row_net: L8
+            mirror:
+              row_net: R8
 
-          
         outer:
           key:
             stagger: 10
             spread: 22
             splay: 1
             padding: 21
-            column_net: P18
-
+            row_net: L18
+            mirror:
+              row_net: R18
+          rows:
+            3:
+              skip: true
       rows:
         1:
           rotate: -5
-          column_net: P16
+          column_net: L16
+          mirror:
+            column_net: R16
         2:
           rotate: 5
-          column_net: P15
+          column_net: L15
+          mirror:
+            column_net: R15
         3:
           rotate: 5
-          column_net: P14
+          column_net: L14
+          mirror:
+            column_net: R14
+  mirror:
+    ref: matrix_pinky_home
+    distance: 350
 
-  rotate: 0
- # mirror:
-  #  ref: matrix_pinky_home
-   # distance: 350
 outlines:
 
   keys:
@@ -124,7 +167,7 @@ outlines:
       operation: stack
       points:
         - ref: matrix_prepinky_home
-          shift: [0, 0]
+          shift: [0, -10]
         - ref: matrix_middle_top
           shift: [-15, 0]
         - ref: matrix_inner_top
@@ -135,31 +178,73 @@ outlines:
           shift: [0, 0]
         - ref: thumb_inner_1
           shift: [0, 0]
-        - ref: matrix_inner_bottom
-          shift: [10, -5]
+        - ref: matrix_middle_home
+          shift: [20, -5]
 
       fillet: 20
       expand: 20
       adjust.shift: [0, 0]
 
-  combo:
+  right:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: mirror_matrix_prepinky_home
+          shift: [0, -10]
+        - ref: mirror_matrix_middle_top
+          shift: [-15, 0]
+        - ref: mirror_matrix_inner_top
+          shift: [0, 0]
+        - ref: mirror_matrix_inner_home
+          shift: [0, 5]
+        - ref: mirror_thumb_outer_1
+          shift: [0, 0]
+        - ref: mirror_thumb_inner_1
+          shift: [0, 0]
+        - ref: mirror_matrix_middle_home
+          shift: [20, -5]
+
+      fillet: 20
+      expand: 20
+      adjust.shift: [0, 0]
+
+  comboLeft:
     - name: left
     - operation: subtract
+      name: keys
+
+  comboRight:
+    - name: right
+    - operation: subtract
+      name: keys
+  
+  comboOut:
+    - name: right
+    - operation: add
+      name: left
+
+
+  combo:
+    - name: comboOut
+    - operation: add
       name: keys
 
 pcbs:
   fiano:
     outlines:
       main:
-        outline: left
+        outline: combo
+        layer: Edge.Cuts
+    template: kicad8
     footprints:
+
       mx_hotswap:
         what: mx
         where: true
         params:
           keycaps: true
-          reverse: true
-          hotswap: true
+          reverse: false
+          hotswap: false
           from: "{{column_net}}"
           to: "{{colrow}}"
 
@@ -172,90 +257,117 @@ pcbs:
         adjust:
           shift: [0, -5]
 
-      promicro:
+      promicroL:
         what: promicro
         params:
           orientation: "down"
+          RAW: RAWL
+          GND: GNDL
+          RST: RSTL
+          VCC: VCCL
+          P21: L21
+          P20: L20
+          P19: L19
+          P18: L18
+          P15: L15
+          P14: L14
+          P16: L16
+          P10: L10
+          P1: L1
+          P0: L0
+          P2: L2
+          P3: L3
+          P4: L4
+          P5: L5
+          P6: L6
+          P7: L7
+          P8: L8
+          P9: L9
         where:
-          ref.aggregate.parts: [matrix_ring_home, matrix_index_bottom]
-          shift: [0, -8]
-          rotate: 90
+          ref.aggregate.parts: [matrix_middle_top]
+          shift: [0, 1]
+          rotate: -100
 
-      oled:
-        what: oled
+      promicroR:
+        what: promicro
         params:
-          side: "F"
-          SDA: P2
-          SCL: P3
+          orientation: "down"
+          RAW: RAWR
+          GND: GNDR
+          RST: RSTR
+          VCC: VCCR
+          P21: R21
+          P20: R20
+          P19: R19
+          P18: R18
+          P15: R15
+          P14: R14
+          P16: R16
+          P10: R10
+          P1: R1
+          P0: R0
+          P2: R2
+          P3: R3
+          P4: R4
+          P5: R5
+          P6: R6
+          P7: R7
+          P8: R8
+          P9: R9
+
         where:
-          ref: matrix_ring_home
-          shift: [5, -15]
-          rotate: 0
-      
-      reset:
+          ref.aggregate.parts: [mirror_matrix_middle_top]
+          shift: [0, 1]
+          rotate: -80
+
+      resetL:
         what: button
         params:
-          from: GND
-          to: RST
+          from: GNDL
+          to: RSTL
         where:
-          ref: matrix_pinky_hometop
-          shift: [0, 15]
-          rotate: 0
-      
-      holeLeftTop:
-        what: mountinghole
-        where:
-          ref: matrix_middle_top
-          shift: [-20, 10]
-          rotate: 0
-      
-      holeLeftCenter:
-        what: mountinghole
-        where:
-          ref: matrix_pinky_hometop
-          shift: [-20, -10]
-          rotate: 0
-      
-      holeCenterBottom:
-        what: mountinghole
-        where:
-          ref: matrix_ring_home
-          shift: [0, -20]
-          rotate: 0
-      
-      holeThumbBottom:
-        what: mountinghole
-        where:
-          ref: thumb_inner_1
-          shift: [15, -5]
-          rotate: 0
-      
-
-      holeThumbTop:
-        what: mountinghole
-        where:
-          ref: thumb_outer_3
+          ref: matrix_ring_top
           shift: [0, 20]
           rotate: 0
       
-      # trrs_jack:
-      #   what: trrs
-      #   params:
-      #   where:
-      #     ref: thumb_inner_1
-      #     shift: [0, 0]
-      #     rotate: 0
-        #?????????
+      resetR:
+        what: button
+        params:
+          from: GNDR
+          to: RSTR
+        where:
+          ref: mirror_matrix_ring_top
+          shift: [0, 20]
+          rotate: 0
       
-
-
-
-
+      trrsL:
+        what: trrs
+        params:
+          A: "VCCL"
+          B: "L0"
+          C: "L1"
+          D: "GNDL"
+        where:
+          ref: thumb_outer_2
+          shift: [14, 30]
+          rotate: -85
+      
+      trrsR:
+        what: trrs
+        params:
+          A: "VCCR"
+          B: "R0"
+          C: "R1"
+          D: "GNDR"
+        where:
+          ref: mirror_thumb_outer_2
+          shift: [14, 30]
+          rotate: -85
 
 cases:
   standard_case_wood:
     - what: outline
-      name: left
+      name: combo
       extrude: 10
       shift: [0, 0, 0]
       rotate: [0, 0, 0]
